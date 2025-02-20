@@ -37,7 +37,7 @@ function create_folders_files(cb){
 }
 
 function create_folder(cb){
-    fs.mkdir('./randomFolder', (err) => {
+    fs.mkdir('../randomFolder', (err) => {
         if(err){
             console.log(err.message)
             return;
@@ -50,7 +50,7 @@ function create_folder(cb){
 
 function create_files(arr,data,cb){
     for(let index of arr){
-        writing_files(`./randomFolder/${index}`, JSON.stringify(data,null,2));
+        writing_files(`../randomFolder/${index}`, JSON.stringify(data,null,2));
         console.log('file is created',index);
     }
     cb();
@@ -60,7 +60,7 @@ function create_files(arr,data,cb){
 function delete_files(arr){
 
     for(let index of arr){
-        deletefiles_fun(`./randomFolder/${index}`);
+        deletefiles_fun(`../randomFolder/${index}`);
         console.log('file is deleted',index);
     }
     return;
@@ -87,11 +87,15 @@ let data = [
 ];
 
 
-create_folders_files( () => {
-    create_folder( () => {
-        create_files(arr,data,() => {
-            delete_files(arr);
+function callback_hell(){
+    create_folders_files( () => {
+        create_folder( () => {
+            create_files(arr,data,() => {
+                delete_files(arr);
+            })
         })
     })
-})
+}
+
+module.exports = callback_hell;
 

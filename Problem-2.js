@@ -45,7 +45,7 @@ function append_file_cb(path,data,cb){
 }
 
 function read_lipsum(cb){
-    fs.readFile( './lipsum.txt', 'utf-8', (err,data) => {
+    fs.readFile( '../lipsum.txt', 'utf-8', (err,data) => {
         if(err) {
             console.log(err.message)
             return;
@@ -56,23 +56,23 @@ function read_lipsum(cb){
 
 function upper_Case(data,cb){
     const upper_case_data = data.toUpperCase();
-    let file_name = './Upper_Case_Data.txt';
-    write_file('./filenames.txt',`${file_name}\n`);
+    let file_name = '../Upper_Case_Data.txt';
+    write_file('../filenames.txt',`${file_name}\n`);
     
     write_file_cb(`${file_name}`, upper_case_data, cb);
 }
 
 
 function lower_Case(cb){
-    const lower_case_data = fs.readFile('./Upper_Case_Data.txt', 'utf-8', (err,data) => {
+    const lower_case_data = fs.readFile('../Upper_Case_Data.txt', 'utf-8', (err,data) => {
 
         let lower_data = data.toLowerCase();
 
         lower_data = lower_data.split('. ');
 
-        let file_name = './Lower_Case_Data.txt';
+        let file_name = '../Lower_Case_Data.txt';
 
-        append_file('./filenames.txt', `${file_name}\n`);
+        append_file('../filenames.txt', `${file_name}\n`);
 
         let val = lower_data.join("\n");
 
@@ -81,12 +81,12 @@ function lower_Case(cb){
 }
 
 function both_files(cb){
-    fs.readFile('./Upper_Case_Data.txt', 'utf-8', (err,file1_data) => {
+    fs.readFile('../Upper_Case_Data.txt', 'utf-8', (err,file1_data) => {
         if(err){
             console.log(err.message);
             return;
         }
-        fs.readFile('./Lower_Case_Data.txt', 'utf-8', (err,file2_data) => {
+        fs.readFile('../Lower_Case_Data.txt', 'utf-8', (err,file2_data) => {
             if(err){
                 console.log(err.message);
                 return;
@@ -96,15 +96,15 @@ function both_files(cb){
             let sentences = combinedText
                 .split(". ").sort().join(".\n")
            
-            let file_name = './file3.txt';
+            let file_name = '../file3.txt';
             write_file(file_name, sentences);
-            append_file_cb('./filenames.txt',`${file_name}\n`,cb)
+            append_file_cb('../filenames.txt',`${file_name}\n`,cb)
         })
     })
 }
 
 function deleteing_files(){
-    fs.readFile('./filenames.txt','utf-8', (err,data) => {
+    fs.readFile('../filenames.txt','utf-8', (err,data) => {
         if(err){
             console.log(err.message);
             return;
@@ -125,17 +125,21 @@ function deleteing_files(){
 }
 
 
-read_lipsum((data) => {
-    console.log("Original Data Read:");
-    upper_Case(data, () => {
-        console.log("Uppercase Data Processed.");
-        lower_Case(() => {
-            console.log("Lowercase Data Processed.");
-            both_files( () => {
-                setTimeout( () => {
-                    deleteing_files();
-                },1000);
+function callback_hell(){
+    read_lipsum((data) => {
+        console.log("Original Data Read:");
+        upper_Case(data, () => {
+            console.log("Uppercase Data Processed.");
+            lower_Case(() => {
+                console.log("Lowercase Data Processed.");
+                both_files( () => {
+                    setTimeout( () => {
+                        deleteing_files();
+                    },1000);
+                });
             });
         });
     });
-});
+}
+
+module.exports = callback_hell;
