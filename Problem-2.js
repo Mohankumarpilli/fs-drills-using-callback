@@ -133,9 +133,7 @@ function callback_hell(){
             lower_Case(() => {
                 console.log("Lowercase Data Processed.");
                 both_files( () => {
-                    setTimeout( () => {
-                        deleteing_files();
-                    },1000);
+                    deleteing_files();
                 });
             });
         });
