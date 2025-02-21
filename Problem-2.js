@@ -15,13 +15,13 @@ function write_file(path,name){
     })
 }
 
-function write_file_cb(path,name,cb){
+function write_file_callback(path,name,callback){
     fs.writeFile(path,name, (err) => {
         if(err){
             console.log(err.message);
             return;
         }
-        cb();
+        callback();
     })
 }
 
@@ -34,36 +34,36 @@ function append_file(path,data){
     })
 }
 
-function append_file_cb(path,data,cb){
+function append_file_callback(path,data,callback){
     fs.appendFile(path, data, (err) => {
         if(err){
             console.log(err.message);
             return;
         }
-        cb();
+        callback();
     })
 }
 
-function read_lipsum(cb){
+function read_lipsum(callback){
     fs.readFile( '../lipsum.txt', 'utf-8', (err,data) => {
         if(err) {
             console.log(err.message)
             return;
         }
-        cb(data);
+        callback(data);
     })
 }
 
-function upper_Case(data,cb){
+function upper_Case(data,callback){
     const upper_case_data = data.toUpperCase();
     let file_name = '../Upper_Case_Data.txt';
     write_file('../filenames.txt',`${file_name}\n`);
     
-    write_file_cb(`${file_name}`, upper_case_data, cb);
+    write_file_callback(`${file_name}`, upper_case_data, callback);
 }
 
 
-function lower_Case(cb){
+function lower_Case(callback){
     const lower_case_data = fs.readFile('../Upper_Case_Data.txt', 'utf-8', (err,data) => {
 
         let lower_data = data.toLowerCase();
@@ -76,11 +76,11 @@ function lower_Case(cb){
 
         let val = lower_data.join("\n");
 
-        write_file_cb(`${file_name}`, val, cb);
+        write_file_callback(`${file_name}`, val, callback);
     });
 }
 
-function both_files(cb){
+function both_files(callback){
     fs.readFile('../Upper_Case_Data.txt', 'utf-8', (err,file1_data) => {
         if(err){
             console.log(err.message);
@@ -98,7 +98,7 @@ function both_files(cb){
            
             let file_name = '../file3.txt';
             write_file(file_name, sentences);
-            append_file_cb('../filenames.txt',`${file_name}\n`,cb)
+            append_file_callback('../filenames.txt',`${file_name}\n`,callback)
         })
     })
 }
