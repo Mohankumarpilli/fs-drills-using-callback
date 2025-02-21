@@ -5,12 +5,6 @@
 // 5. Read the contents of filenames.txt and delete all the new files that are mentioned in that list simultaneously.
 
 const fs = require('fs');
-const path = require('path');
-
-const UPPER_CASE_FILE = path.join(__dirname, 'Upper_Case_Data.txt');
-const LOWER_CASE_FILE = path.join(__dirname, 'Lower_Case_Data.txt');
-const SORTED_FILE = path.join(__dirname, 'file3.txt');
-const FILENAMES_FILE = path.join(__dirname, 'filenames.txt');
 
 function writeFile(filePath, data, message, callback) {
     fs.writeFile(filePath, data, 'utf-8', (err) => {
@@ -35,39 +29,39 @@ function readFile(filePath, callback) {
 }
 
 function processLipsum(callback) {
-    readFile(path.join(__dirname, 'lipsum.txt'), (data) => {
+    readFile('../lipsum.txt', (data) => {
         console.log("Original Data Read:");
-        writeFile(UPPER_CASE_FILE, data.toUpperCase(), "Uppercase Data Processed.", () => {
-            appendFile(FILENAMES_FILE, `${UPPER_CASE_FILE}\n`, callback);
+        writeFile('Upper_Case_Data.txt', data.toUpperCase(), "Uppercase Data Processed.", () => {
+            appendFile('filenames.txt', 'Upper_Case_Data.txt\n', callback);
         });
     });
 }
 
 function processLowerCase(callback) {
-    readFile(UPPER_CASE_FILE, (data) => {
-        writeFile(LOWER_CASE_FILE, data.toLowerCase().split('. ').join('\n'), "Lowercase Data Processed.", () => {
-            appendFile(FILENAMES_FILE, `${LOWER_CASE_FILE}\n`, callback);
+    readFile('Upper_Case_Data.txt', (data) => {
+        writeFile('Lower_Case_Data.txt', data.toLowerCase().split('. ').join('\n'), "Lowercase Data Processed.", () => {
+            appendFile('filenames.txt', 'Lower_Case_Data.txt\n', callback);
         });
     });
 }
 
 function processSorting(callback) {
-    readFile(UPPER_CASE_FILE, (upperCaseData) => {
-        readFile(LOWER_CASE_FILE, (lowerCaseData) => {
+    readFile('Upper_Case_Data.txt', (upperCaseData) => {
+        readFile('Lower_Case_Data.txt', (lowerCaseData) => {
             const combinedText = `${upperCaseData}\n${lowerCaseData}`
                 .split('. ')
                 .sort()
                 .join('.\n');
 
-            writeFile(SORTED_FILE, combinedText, "Sorted Data Processed.", () => {
-                appendFile(FILENAMES_FILE, `${SORTED_FILE}\n`, callback);
+            writeFile('file3.txt', combinedText, "Sorted Data Processed.", () => {
+                appendFile('filenames.txt', 'file3.txt\n', callback);
             });
         });
     });
 }
 
 function deleteAllFiles(callback) {
-    readFile(FILENAMES_FILE, (data) => {
+    readFile('filenames.txt', (data) => {
         const filesToDelete = data.split('\n').filter((file) => file.trim());
 
         function deleteNext(index) {
