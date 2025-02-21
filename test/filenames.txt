@@ -1,6 +1,0 @@
-Upper_Case_Data.txt
-Lower_Case_Data.txt
-file3.txt
-Upper_Case_Data.txt
-Lower_Case_Data.txt
-file3.txt
